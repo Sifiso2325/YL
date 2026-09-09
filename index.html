@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouthLink SA | Opportunities for Youth</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #f5f8f6; color: #17231d; }
+    header { background: #0b6b3a; color: white; padding: 18px 6%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .logo { font-size: 26px; font-weight: bold; }
+    nav a { color: white; text-decoration: none; margin-left: 15px; font-size: 14px; cursor: pointer; }
+    nav a:hover { text-decoration: underline; }
+    .auth-buttons { display: flex; gap: 10px; }
+    .auth-buttons button { background: white; color: #0b6b3a; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 13px; }
+    .auth-buttons button:hover { background: #f0f0f0; }
+    .hero { padding: 65px 6%; text-align: center; background: linear-gradient(135deg, #0b6b3a, #159447); color: white; }
+    .hero h1 { font-size: 42px; margin-bottom: 15px; }
+    .hero p { max-width: 700px; margin: auto; font-size: 18px; }
+    .search-box { max-width: 700px; margin: 30px auto 0; display: flex; gap: 10px; }
+    .search-box input { flex: 1; padding: 15px; border: none; border-radius: 8px; font-size: 16px; }
+    .search-box button { padding: 15px 22px; border: none; border-radius: 8px; background: white; color: #0b6b3a; font-weight: bold; cursor: pointer; }
+    section { padding: 50px 6%; text-align: center; }
+    section h2 { color: #0b6b3a; margin-bottom: 10px; font-size: 30px; }
+    .intro { max-width: 700px; margin: 0 auto 30px; }
+    .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; max-width: 1000px; margin: auto; }
+    .category { background: white; padding: 22px 10px; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); cursor: pointer; transition: transform 0.2s; }
+    .category:hover { transform: translateY(-4px); }
+    .category .icon { font-size: 35px; margin-bottom: 8px; }
+    .opportunities { background: #ffffff; }
+    .opportunity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1100px; margin: auto; }
+    .opportunity { text-align: left; background: #f8fbf9; border-radius: 14px; padding: 22px; border: 1px solid #e1ebe5; }
+    .tag { display: inline-block; background: #dff3e7; color: #0b6b3a; padding: 5px 9px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+    .opportunity h3 { margin-bottom: 8px; color: #0b6b3a; }
+    .opportunity p { font-size: 14px; margin-bottom: 15px; }
+    .details { font-size: 13px; margin-bottom: 15px; }
+    .apply { display: inline-block; background: #0b6b3a; color: white; padding: 9px 15px; border-radius: 7px; text-decoration: none; font-size: 13px; font-weight: bold; }
+    .teacher { background: #e7f5ec; }
+    .cta-button { display: inline-block; margin-top: 20px; background: #0b6b3a; color: white; padding: 13px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; }
+    footer { background: #17231d; color: white; text-align: center; padding: 25px; }
+    .no-results { display: none; margin-top: 25px; font-weight: bold; }
+    .register-section { background: #f5f8f6; padding: 60px 6%; text-align: center; }
+    .registration-container { max-width: 1000px; margin: 30px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .registration-card { background: white; padding: 25px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .registration-card h3 { color: #0b6b3a; margin-bottom: 10px; }
+    .registration-card p { font-size: 14px; margin-bottom: 20px; }
+    .registration-card button, .form-container button { border: none; background: #0b6b3a; color: white; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .form-container { display: none; max-width: 600px; margin: 30px auto 0; background: white; padding: 30px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .form-container h3 { color: #0b6b3a; margin-bottom: 20px; }
+    .form-container form { display: flex; flex-direction: column; gap: 12px; }
+    .form-container input, .form-container textarea { width: 100%; padding: 13px; border: 1px solid #d5dfd9; border-radius: 8px; font-size: 15px; }
+    #successMessage { margin-top: 20px; font-weight: bold; color: #0b6b3a; }
+    .error-message { color: #d32f2f; font-weight: bold; margin-top: 10px; }
+    #dashboard { display: none; background: white; padding: 40px 6%; }
+    .dashboard-header { text-align: center; margin-bottom: 30px; }
+    .dashboard-header h2 { color: #0b6b3a; margin-bottom: 10px; }
+    .profile-card { background: #f8fbf9; padding: 25px; border-radius: 14px; max-width: 600px; margin: 0 auto 30px; border: 1px solid #e1ebe5; }
+    .profile-card p { margin: 10px 0; text-align: left; }
+    .profile-card strong { color: #0b6b3a; }
+    .dashboard-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .dashboard-actions button { background: #0b6b3a; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .dashboard-actions button:hover { background: #084d29; }
+    .login-container { display: none; max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .login-container h2 { color: #0b6b3a; margin-bottom: 20px; text-align: center; }
+    .login-container form { display: flex; flex-direction: column; gap: 12px; }
+    .login-container input { padding: 13px; border: 1px solid #d5dfd9; border-radius: 8px; font-size: 15px; }
+    .login-container button { background: #0b6b3a; color: white; padding: 13px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .login-container button:hover { background: #084d29; }
+    .login-toggle { text-align: center; margin-top: 15px; }
+    .login-toggle a { color: #0b6b3a; cursor: pointer; text-decoration: underline; }
+    @media (max-width: 600px) { .hero h1 { font-size: 32px; } nav { width: 100%; } nav a { margin: 0 8px 0 0; } .search-box { flex-direction: column; } .search-box button { width: 100%; } .dashboard-actions { flex-direction: column; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">🌱 YouthLink</div>
+  <nav>
+    <a href="#opportunities">Opportunities</a>
+    <a href="#teachers">Teachers</a>
+    <a href="#about">About</a>
+    <a href="#register">Join YouthLink</a>
+    <a href="#" id="dashboardNav" onclick="goToDashboard(); return false;" style="display:none;">Dashboard</a>
+  </nav>
+  <div class="auth-buttons">
+    <button id="loginBtn" onclick="showLogin()">Login</button>
+    <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+  </div>
+</header>
+<section class="hero" id="heroSection">
+  <h1>Connect. Learn. Earn. Grow.</h1>
+  <p>Discover jobs, education, training, business opportunities and programmes designed to help South African youth build a better future.</p>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search jobs, teachers, bursaries, training..." onkeyup="searchOpportunities()">
+    <button onclick="searchOpportunities()">Search</button>
+  </div>
+</section>
+<section id="dashboard">
+  <div class="dashboard-header">
+    <h2>👤 Your YouthLink Dashboard</h2>
+    <p>Welcome to your profile!</p>
+  </div>
+  <div class="profile-card">
+    <p><strong>Name:</strong> <span id="dashName"></span></p>
+    <p><strong>Email:</strong> <span id="dashEmail"></span></p>
+    <p><strong>Phone:</strong> <span id="dashPhone"></span></p>
+    <p><strong>Location:</strong> <span id="dashLocation"></span></p>
+    <p><strong>User Type:</strong> <span id="dashType"></span></p>
+    <p><strong>Skills:</strong> <span id="dashSkills"></span></p>
+  </div>
+  <div class="dashboard-actions">
+    <button onclick="editProfile()">Edit Profile</button>
+    <button onclick="viewOpportunities()">View Opportunities</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</section>
+<div class="login-container" id="loginForm">
+  <h2>Login to YouthLink</h2>
+  <form onsubmit="handleLogin(event)">
+    <input type="email" id="loginEmail" placeholder="Email address" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+  <div id="loginError" class="error-message"></div>
+  <div class="login-toggle">
+    Don't have an account? <a onclick="hideLogin(); scrollToRegister()">Register here</a>
+  </div>
+</div>
+<div id="mainContent">
+  <section>
+    <h2>Explore Opportunities</h2>
+    <p class="intro">Find opportunities that match your skills, education and goals.</p>
+    <div class="categories">
+      <div class="category" onclick="filterCategory('Job')"><div class="icon">💼</div><strong>Jobs</strong></div>
+      <div class="category" onclick="filterCategory('Training')"><div class="icon">🎓</div><strong>Training</strong></div>
+      <div class="category" onclick="filterCategory('Teacher')"><div class="icon">👨‍🏫</div><strong>Teachers</strong></div>
+      <div class="category" onclick="filterCategory('Bursary')"><div class="icon">📚</div><strong>Bursaries</strong></div>
+      <div class="category" onclick="filterCategory('Business')"><div class="icon">🚀</div><strong>Business</strong></div>
+      <div class="category" onclick="filterCategory('Programme')"><div class="icon">🤝</div><strong>Programmes</strong></div>
+    </div>
+  </section>
+  <section class="opportunities" id="opportunities">
+    <h2>Latest Opportunities</h2>
+    <p class="intro">Examples of opportunities YouthLink will help users discover.</p>
+    <div class="opportunity-grid">
+      <div class="opportunity" data-category="Job"><span class="tag">JOB</span><h3>Entry-Level Jobs</h3><p>Discover employment opportunities for young people looking to start or grow their careers.</p><div class="details">📍 South Africa</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Training"><span class="tag">TRAINING</span><h3>Skills Development</h3><p>Find skills programmes and training opportunities that can improve your chances of employment.</p><div class="details">🎓 Skills & Training</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Teacher"><span class="tag">TEACHERS</span><h3>Teacher Opportunities</h3><p>Connect unemployed and qualified teachers with tutoring and education opportunities.</p><div class="details">👨‍🏫 Education</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Teacher"><span class="tag">EXTRA CLASSES</span><h3>Extra Classes</h3><p>Help teachers connect with learners looking for affordable extra lessons.</p><div class="details">📚 Tutoring</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Programme"><span class="tag">AFTER SCHOOL</span><h3>After-School Programmes</h3><p>Connect schools and community organisations with teachers and mentors for after-school activities.</p><div class="details">🏫 Community</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Business"><span class="tag">BUSINESS</span><h3>Youth Entrepreneurship</h3><p>Discover business support, mentorship and funding opportunities for young entrepreneurs.</p><div class="details">🚀 Entrepreneurship</div><a href="#" class="apply">View Opportunity</a></div>
+      <div class="opportunity" data-category="Bursary"><span class="tag">BURSARY</span><h3>Education Opportunities</h3><p>Find bursaries, scholarships and education support programmes.</p><div class="details">🎓 Education</div><a href="#" class="apply">View Opportunity</a></div>
+    </div>
+    <p id="noResults" class="no-results">No opportunities found. Try another search.</p>
+  </section>
+  <section class="teacher" id="teachers">
+    <h2>Are You an Unemployed Teacher?</h2>
+    <p class="intro">YouthLink aims to help qualified teachers turn their skills into opportunities through tutoring, extra classes, after-school programmes and education projects.</p>
+    <a href="#" class="cta-button" onclick="scrollToRegister(); return false;">Teacher Registration Available</a>
+  </section>
+  <section id="about">
+    <h2>Our Vision</h2>
+    <p class="intro">YouthLink is being built to become a central platform where South African youth can discover opportunities, develop skills, connect with organisations and create income.</p>
+  </section>
+  <section id="register" class="register-section">
+    <h2>Join YouthLink</h2>
+    <p class="intro">Create your YouthLink profile and connect with opportunities.</p>
+    <div class="registration-container">
+      <div class="registration-card"><h3>👤 Young Person</h3><p>Find jobs, training, bursaries and youth programmes.</p><button onclick="showRegistration('young')">Register as Youth</button></div>
+      <div class="registration-card"><h3>👨‍🏫 Teacher</h3><p>Find tutoring, extra classes and after-school opportunities.</p><button onclick="showRegistration('teacher')">Register as Teacher</button></div>
+      <div class="registration-card"><h3>🏢 Organisation</h3><p>Connect with young people and post opportunities.</p><button onclick="showRegistration('organisation')">Register Organisation</button></div>
+    </div>
+    <div id="registrationForm" class="form-container">
+      <h3 id="formTitle">Create Your Profile</h3>
+      <form onsubmit="submitRegistration(event)">
+        <input type="text" id="fullName" placeholder="Full name" required>
+        <input type="email" id="email" placeholder="Email address" required>
+        <input type="password" id="password" placeholder="Create a password (at least 6 characters)" minlength="6" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" minlength="6" required>
+        <input type="tel" id="phone" placeholder="Phone number" required>
+        <input type="text" id="location" placeholder="City / Area" required>
+        <textarea id="skills" placeholder="Skills, qualifications or interests" rows="4" required></textarea>
+        <button type="submit">Create YouthLink Profile</button>
+      </form>
+      <p id="successMessage"></p>
+      <p id="errorMessage" class="error-message"></p>
+    </div>
+  </section>
+</div>
+<footer>
+  <p>© 2026 YouthLink SA</p>
+  <p>Connecting youth with opportunity.</p>
+</footer>
+<script>
+let selectedUserType = "";
+function showRegistration(type) {
+  selectedUserType = type;
+  const form = document.getElementById("registrationForm");
+  const title = document.getElementById("formTitle");
+  form.style.display = "block";
+  if (type === "young") title.innerText = "👤 Register as a Young Person";
+  if (type === "teacher") title.innerText = "👨‍🏫 Register as a Teacher";
+  if (type === "organisation") title.innerText = "🏢 Register Your Organisation";
+  form.scrollIntoView({ behavior: "smooth" });
+}
+function submitRegistration(event) {
+  event.preventDefault();
+  const fullName = document.getElementById("fullName").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  const phone = document.getElementById("phone").value;
+  const location = document.getElementById("location").value;
+  const skills = document.getElementById("skills").value;
+  const errorMsg = document.getElementById("errorMessage");
+  const successMsg = document.getElementById("successMessage");
+  errorMsg.innerText = "";
+  successMsg.innerText = "";
+  if (password !== confirmPassword) {
+    errorMsg.innerText = "❌ Passwords do not match!";
+    return;
+  }
+  const userProfile = {
+    fullName: fullName,
+    email: email,
+    password: password,
+    phone: phone,
+    location: location,
+    skills: skills,
+    type: selectedUserType,
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem("youthlink_user_" + email, JSON.stringify(userProfile));
+  localStorage.setItem("youthlink_currentUser", email);
+  successMsg.innerText = "🎉 Success " + fullName + "! Your profile created. Logging in...";
+  document.querySelector("#registrationForm form").reset();
+  setTimeout(() => {
+    showDashboard(userProfile);
+  }, 2000);
+}
+function showLogin() {
+  document.getElementById("loginForm").style.display = "block";
+  document.getElementById("heroSection").style.display = "none";
+  document.getElementById("mainContent").style.display = "none";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginForm").scrollIntoView({ behavior: "smooth" });
+}
+function hideLogin() {
+  document.getElementById("loginForm").style.display = "none";
+}
+function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  const errorDiv = document.getElementById("loginError");
+  errorDiv.innerText = "";
+  const userStr = localStorage.getItem("youthlink_user_" + email);
+  if (!userStr) {
+    errorDiv.innerText = "❌ Email not found!";
+    return;
+  }
+  const user = JSON.parse(userStr);
+  if (user.password !== password) {
+    errorDiv.innerText = "❌ Incorrect password!";
+    return;
+  }
+  localStorage.setItem("youthlink_currentUser", email);
+  showDashboard(user);
+}
+function showDashboard(user) {
+  document.getElementById("heroSection").style.display = "none";
+  document.getElementById("mainContent").style.display = "none";
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("dashName").innerText = user.fullName;
+  document.getElementById("dashEmail").innerText = user.email;
+  document.getElementById("dashPhone").innerText = user.phone;
+  document.getElementById("dashLocation").innerText = user.location;
+  document.getElementById("dashType").innerText = user.type === 'young' ? 'Young Person' : user.type === 'teacher' ? 'Teacher' : 'Organisation';
+  document.getElementById("dashSkills").innerText = user.skills;
+  document.getElementById("loginBtn").style.display = "none";
+  document.getElementById("logoutBtn").style.display = "block";
+  document.getElementById("dashboardNav").style.display = "inline";
+}
+function logout() {
+  if (confirm("Are you sure you want to logout?")) {
+    localStorage.removeItem("youthlink_currentUser");
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    document.getElementById("heroSection").style.display = "block";
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("loginBtn").style.display = "block";
+    document.getElementById("logoutBtn").style.display = "none";
+    document.getElementById("dashboardNav").style.display = "none";
+    alert("You have been logged out successfully.");
+  }
+}
+function editProfile() {
+  alert("Edit profile feature coming soon!");
+}
+function viewOpportunities() {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("mainContent").style.display = "block";
+  document.getElementById("opportunities").scrollIntoView({ behavior: "smooth" });
+}
+function goToDashboard() {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("mainContent").style.display = "none";
+  document.getElementById("heroSection").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+}
+function scrollToRegister() {
+  document.getElementById("register").scrollIntoView({ behavior: "smooth" });
+}
+window.addEventListener("load", function() {
+  const currentUser = localStorage.getItem("youthlink_currentUser");
+  if (currentUser) {
+    const userStr = localStorage.getItem("youthlink_user_" + currentUser);
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      showDashboard(user);
+    }
+  }
+});
+function searchOpportunities() {
+  const search = document.getElementById("search").value.toLowerCase();
+  const opportunities = document.querySelectorAll(".opportunity");
+  let found = 0;
+  opportunities.forEach(function(opportunity) {
+    const text = opportunity.innerText.toLowerCase();
+    if (text.includes(search)) {
+      opportunity.style.display = "block";
+      found++;
+    } else {
+      opportunity.style.display = "none";
+    }
+  });
+  document.getElementById("noResults").style.display = found === 0 ? "block" : "none";
+}
+function filterCategory(category) {
+  const opportunities = document.querySelectorAll(".opportunity");
+  let found = 0;
+  opportunities.forEach(function(opportunity) {
+    if (opportunity.dataset.category === category) {
+      opportunity.style.display = "block";
+      found++;
+    } else {
+      opportunity.style.display = "none";
+    }
+  });
+  document.getElementById("noResults").style.display = found === 0 ? "block" : "none";
+  document.getElementById("opportunities").scrollIntoView({ behavior: "smooth" });
+}
+</script>
+</body>
+</html>
